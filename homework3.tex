@@ -1,0 +1,545 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage{natbib}         % Pour la bibliographie
+\usepackage{url}            % Pour citer les adresses web
+\usepackage[T1]{fontenc}    % Encodage des accents
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+\usepackage{numprint}       % Histoire que les chiffres soient bien
+
+\usepackage{amsmath}        % La base pour les maths
+\usepackage{mathrsfs}       % Quelques symboles supplémentaires
+\usepackage{amssymb}        % encore des symboles.
+\usepackage{amsfonts}       % Des fontes, eg pour \mathbb.
+
+\usepackage[svgnames]{xcolor} % De la couleur
+\usepackage{geometry}       % Gérer correctement la taille
+
+%%% Si jamais vous voulez changer de police: décommentez les trois 
+%\usepackage{tgpagella}
+%\usepackage{tgadventor}
+%\usepackage{inconsolata}
+
+%%% Pour L'utilisation de Python
+\usepackage{pythontex}
+
+\usepackage{graphicx} % inclusion des graphiques
+\usepackage{wrapfig}  % Dessins dans le texte.
+
+\usepackage{tikz}     % Un package pour les dessins (utilisé pour l'environnement {code})
+\usepackage[framemethod=TikZ]{mdframed}
+
+\usepackage{enumitem}
+
+% Un environnement pour bien présenter le code informatique
+\newenvironment{code}{%
+\begin{mdframed}[linecolor=Green,innerrightmargin=30pt,innerleftmargin=30pt,
+backgroundcolor=Black!5,
+skipabove=10pt,skipbelow=10pt,roundcorner=5pt,
+splitbottomskip=6pt,splittopskip=12pt]
+}{%
+\end{mdframed}
+}
+
+% Mettez votre titre et votre nom ci-après
+\title{Course of Web Information Retrieval \\
+Homework 3}
+\author{Simone Agostinelli 1523559, Giacomo Vettraino 1594722}
+%% À décommenter si vous ne voulez pas que la date apparaisse explicitement
+\date{}
+
+% Un raccourci pour composer les unités correctement (en droit)
+% Exemple: $v = 10\U{m.s^{-1}}$
+\newcommand{\U}[1]{~\mathrm{#1}}
+
+% Pour discuter avec le prof dans le document: le premier argument est 
+% le nom de celui qui fait la remarque et le second la remarque 
+% proprement dite: \question{jj}{Que voulez-vous dire par là ?}
+% \reponse{Droopy}{I'm very happy...}
+\usepackage{todonotes}
+\newcommand{\question}[2]{\todo[inline,author=#1]{#2}}
+\newcommand{\reponse}[2]{\todo[inline,color=green,author=#1]{#2}}
+
+% Les guillemets \ofg{par exemple}
+\newcommand{\ofg}[1]{\og{}#1\fg{}}
+% Le d des dérivées doit être droit: \frac{\dd x}{\dd t}
+\newcommand{\dd}{\text{d}}
+
+
+% NB: le script TeXcount permet de compter les mots utilisés dans chaque section d'un document LaTeX. Vous en trouverez une version en ligne à l'adresse
+% http://app.uio.no/ifi/texcount/online.php
+% Il suffit d'y copier l'ensemble du présent document (via Ctrl-A/Ctrl-C puis Ctrl-V dans la fenêtre idoine) pour obtenir le récapitulatif tout en bas de la page qui s'ouvre alors.
+
+% Pour récupérer les bonnes entrées bibliographiques, je vous conseille l'usage de scholar.google.fr pour les recherches
+% et la récupération des entrée BibTeX comme décrit dans cette vidéo: https://www.youtube.com/watch?v=X-9T2Oaj-5A
+
+% Quelques macros utiles
+% La dérivée temporelle, tellement courante en physique, avec les d droits
+\newcommand{\ddt}[1]{\frac{\dd #1}{\dd t}}
+% Des parenthèses, crochets et accolades qui s'adaptent automatiquement à la taille de ce qu'il y a dedans
+\newcommand{\pa}[1]{\left(#1\right)}
+\newcommand{\pac}[1]{\left[#1\right]}
+\newcommand{\paa}[1]{\left\{#1\right\}}
+% Un raccourci pour écrire une constante
+\newcommand{\cte}{\text{C}^{\text{te}}}
+% Pour faire des indices en mode texte (comme les énergie potentielles)
+\newcommand{\e}[1]{_{\text{#1}}}
+% Le produit vectoriel a un nom bizarre:
+\newcommand{\vectoriel}{\wedge}
+
+\usepackage{multirow}
+
+\usepackage{color}
+\usepackage{listings}
+\usepackage{setspace}
+\definecolor{Code}{rgb}{0,0,0}
+\definecolor{Decorators}{rgb}{0.5,0.5,0.5}
+\definecolor{Numbers}{rgb}{0.5,0,0}
+\definecolor{MatchingBrackets}{rgb}{0.25,0.5,0.5}
+\definecolor{Keywords}{rgb}{0,0,1}
+\definecolor{self}{rgb}{0,0,0}
+\definecolor{Strings}{rgb}{0,0.63,0}
+\definecolor{Comments}{rgb}{0,0.63,1}
+\definecolor{Backquotes}{rgb}{0,0,0}
+\definecolor{Classname}{rgb}{0,0,0}
+\definecolor{FunctionName}{rgb}{0,0,0}
+\definecolor{Operators}{rgb}{0,0,0}
+\definecolor{Background}{rgb}{0.98,0.98,0.98}
+\lstdefinelanguage{Python}{
+numbers=left,
+numberstyle=\footnotesize,
+numbersep=1em,
+xleftmargin=1em,
+framextopmargin=2em,
+framexbottommargin=2em,
+showspaces=false,
+showtabs=false,
+showstringspaces=false,
+frame=l,
+tabsize=4,
+% Basic
+basicstyle=\ttfamily\small\setstretch{1},
+backgroundcolor=\color{Background},
+% Comments
+commentstyle=\color{Comments}\slshape,
+% Strings
+stringstyle=\color{Strings},
+morecomment=[s][\color{Strings}]{"""}{"""},
+morecomment=[s][\color{Strings}]{'''}{'''},
+% keywords
+morekeywords={import,from,class,def,for,while,if,is,in,elif,else,not,and,or,print,break,continue,return,True,False,None,access,as,,del,except,exec,finally,global,import,lambda,pass,print,raise,try,assert},
+keywordstyle={\color{Keywords}\bfseries},
+% additional keywords
+morekeywords={[2]@invariant,pylab,numpy,np,scipy},
+keywordstyle={[2]\color{Decorators}\slshape},
+emph={self},
+emphstyle={\color{self}\slshape},
+%
+}
+
+ 
+\usepackage{minted}
+
+\begin{document}
+
+\maketitle
+
+\section{Ham/Spam Classifier}
+
+\subsection{KNN Classifier}
+
+
+
+\subsubsection{Dataset}
+Our dataset is composed by 347 text files representing ham and spam comments related to YouTube videos. These files are composed according to the following table:\\
+
+\begin{center}
+\begin{tabular}{ |l|c|c| }
+\hline
+ & Training Set & Test Set \\ \hline
+\multirow{3}{*}{Spam}
+ & & \\
+ & 122 &  53\\
+  & & \\
+
+ \hline
+\multirow{3}{*}{Ham}
+ & & \\
+ & 120 &  52\\
+  & & \\
+ \hline
+\end{tabular}
+\end{center}
+
+\subsubsection{Vectorizer and Classifier Parameters}
+Firstly we consider the process of vectorization that we have to apply in order to transform our text files into a matrix of TfIdf features. For this step we have:\\
+\begin{itemize}[label={}]
+	\item $ \textbf{tokenizer} \in \{None, stemming\_tokenizer, stemming\_tokenizer\_stopwords\_filter\}$\\   override the string tokenization function if its value is different from $None$;
+    	\item  $ \textbf{ngram\_range} \in \{ (1, 1), (1, 2),(1,3)\}$\\ specify the lower and upper boundary of the range of n-values for different n-grams to be extracted;\\
+\end{itemize}
+
+ While, for the classification phase we have:\\
+\begin{itemize}[label={}]
+	\item $ \textbf{n\_neighbors} \in \{1,3,5,7,9\}$\\ specify the number of neighbors to use for classifying points;
+    	\item  $ \textbf{weigths} \in \{ "uniform", "distance"\}$ \\specify the weight function in prediction ;
+\end{itemize}
+
+
+\subsubsection{Training-Validation Phase}
+Training and validation are performed by using the sklearn Python function \textbf{GridSearchCV} in an automated fashion. Indeed, it performs an exhaustive search of the best parameters values configuration by fitting the specific model (or a series of models transformation if pipeline is used); furthermore, it can output the best estimator and the best parameters configuration by computing scores on this combinations using a scoring function chosen by the user.\\
+In particular, in our case, firstly we decided to use \textbf{Pipeline} sklearn function, in order to construct the different steps that we want to cross-validate: vectorization and classifier fitting.
+\textbf{Pipeline} function has input parameter:\\
+\begin{itemize}[label={}]
+	\item $ \textbf{steps} $ \\ List of (name, transform) tuples  that are chained, in the order in which they are chained, with the last object an estimator.\\
+\end{itemize}
+ 
+\begin{lstlisting}[language=Python]
+vectorizer = TfidfVectorizer(strip_accents= None,
+preprocessor = None,)
+knn = KNeighborsClassifier()
+pipeline = Pipeline([('vect', vectorizer), ('knn', knn),])
+\end{lstlisting}
+
+Then, we can directly make use of \textbf{GridSearchCV} function, in order to setup the automated search for the best parameter configuration.\\
+\textbf{GridSearchCV} has as input parameters:\\
+\begin{itemize}[label={}]
+	\item $ \textbf{estimator} $ \\ This is the estimator on which we want to perform our grid search; in this case we set it to the pipeline just created, as its last step represent an estimator, our KNN Classifier;\\
+	\item $ \textbf{param\_grid} $ \\ Dictionary with parameters names (string) as keys and lists of parameter settings to try as values, or a list of such dictionaries, in which case the grids spanned by each dictionary in the list are explored; this enables searching over any sequence of parameter settings;\\
+	\item $ \textbf{scoring} $ \\A string (see model evaluation documentation) or a scorer callable object / function with signature scorer(estimator, X, y); in this case Matthews correlation coefficient is used;\\
+	\item $ \textbf{n\_jobs} $ \\ Number of jobs to run in parallel, in this way we can control the parallelism of our program, in order to speed up it running time;\\
+	\item $ \textbf{cv} $ \\determines the cross-validation splitting strategy; an integer specify the number of folds in a  KFold, 10 in our case;\\
+\end{itemize}
+
+\begin{lstlisting}[language=Python]
+parameters = {
+'vect__tokenizer': [None, stemming_tokenizer,
+stemming_tokenizer_stopwords_filter],
+'vect__ngram_range': [(1, 1), (1, 2),(1,3)],
+'knn__n_neighbors': [1,3,5,7,9],
+'knn__weights': ["uniform", "distance"]
+}
+grid_search = GridSearchCV(
+pipeline,
+parameters,
+scoring = metrics.make_scorer(metrics.matthews_corrcoef),
+cv = 10,
+n_jobs = 4)
+\end{lstlisting}
+
+\subsubsection{Best Parameters Values}
+After performing cross-validation, as explained before, we have found that the best parameters configuration is:
+\begin{table}[!h]
+\begin{center}
+\begin{tabular}{| c | c |}
+\hline
+\textbf{Parameter} & \textbf{Value} \\ \hline
+knn\_\_n\_neighbors & 9\\ \hline
+knn\_\_n\_weights & distance\\ \hline
+vect\_\_ngram\_range & (1,2)\\ \hline
+vect\_\_tokenizer & None\\ \hline
+
+\end{tabular}
+\end{center}
+\end{table}
+
+\subsubsection{Results for Classification}
+Output of \textbf{metrics.classification\_report}:\\
+\begin{lstlisting}[language=Python]
+----------------------------------------------------
+             precision    recall  f1-score   support
+
+        Ham       0.83      0.96      0.89        52
+       Spam       0.96      0.81      0.88        53
+
+avg / total       0.90      0.89      0.89       105
+----------------------------------------------------
+\end{lstlisting}
+The \textbf{Confusion Matrix}:\\
+\begin{center}
+\begin{tabular}{ |l|c|c| }
+\hline
+ & Predicted-Ham & Predicted-Spam \\ \hline
+\multirow{3}{*}{True-Ham}
+ & & \\
+ & 50 &  2\\
+  & & \\
+
+ \hline
+\multirow{3}{*}{True-Spam}
+ & & \\
+ & 10 &  43\\
+  & & \\
+ \hline
+\end{tabular}
+\end{center}
+The \textbf{Normalized-Accuracy} value: 0.885714285714\\
+The \textbf{Mattiews Correlation Coefficient}: 0.780832919631\\
+
+\section{Sentiment Analysis}
+
+
+\subsection{KNN Classifier}
+
+
+
+\subsubsection{Dataset}
+Our dataset is composed by  1115 text files representing positive and negative sentences. These files are composed according to the following table:\\
+
+\begin{center}
+\begin{tabular}{ |l|c|c| }
+\hline
+ & Training Set & Test Set \\ \hline
+\multirow{3}{*}{Negative}
+ & & \\
+ & 249 &  250\\
+  & & \\
+
+ \hline
+\multirow{3}{*}{Positive}
+ & & \\
+ & 308 &  308\\
+  & & \\
+ \hline
+\end{tabular}
+\end{center}
+\subsubsection{Vectorizer and Classifier Parameters}
+Firstly we consider the process of vectorization that we have to apply in order to transform our text files into a matrix of TfIdf features. For this step we have:\\
+\begin{itemize}[label={}]
+	\item $ \textbf{tokenizer} \in \{None, stemming\_tokenizer, stemming\_tokenizer\_stopwords\_filter\}$ \\  override the string tokenization function if its value is different from $None$;
+    	\item  $ \textbf{ngram\_range} \in \{ (1, 1), (1, 2),(1,3)\}$\\ specify the lower and upper boundary of the range of n-values for different n-grams to be extracted;\\
+\end{itemize}
+
+ While, for the classification phase we have:\\
+\begin{itemize}[label={}]
+	\item $ \textbf{n\_neighbors} \in \{1,3,5,7,9\}$ \\ specify the number of neighbors to use for classifying points;
+    	\item  $ \textbf{weigths} \in \{ uniform, distance\}$\\ specify the weight function in prediction ;\\
+\end{itemize}
+
+
+\subsubsection{Training-Validation Phase}
+\subsubsection{Best Parameters Values}
+After performing cross-validation, as explained before, we have found that the best parameters configuration is:
+\begin{table}[!h]
+\begin{center}
+\begin{tabular}{| c | c |}
+\hline
+\textbf{Parameter} & \textbf{Value} \\ \hline
+knn\_\_n\_neighbors & 3\\ \hline
+knn\_\_n\_weights & distance\\ \hline
+vect\_\_ngram\_range & (1,2)\\ \hline
+vect\_\_tokenizer & stemming\_tokenizer\_stopwords\_filter\\ \hline
+
+\end{tabular}
+\end{center}
+\end{table}
+
+\subsubsection{Results for Classification}
+Output of \textbf{metrics.classification\_report}:\\
+\begin{lstlisting}[language=Python]
+----------------------------------------------------
+             precision    recall  f1-score   support
+
+   Positive       0.85      0.94      0.89       308
+   negative       0.92      0.80      0.85       250
+
+avg / total       0.88      0.88      0.88       558
+----------------------------------------------------
+\end{lstlisting}
+
+The \textbf{Confusion Matrix}:\\
+\begin{center}
+\begin{tabular}{ |l|c|c| }
+\hline
+ & Predicted-Ham & Predicted-Spam \\ \hline
+\multirow{3}{*}{True-Ham}
+ & & \\
+ & 290 & 1 8\\
+  & & \\
+
+ \hline
+\multirow{3}{*}{True-Spam}
+ & & \\
+ & 51 &  199\\
+  & & \\
+ \hline
+\end{tabular}
+\end{center}
+The \textbf{Normalized-Accuracy} value: 0.876344086022\\
+The \textbf{Mattiews Correlation Coefficient}: 0.752375671874\\
+
+
+\subsection{MultinomialNB Classifier}
+
+
+\subsubsection{Dataset}
+Our dataset is composed by  1115 text files representing positive and negative sentences. These files are composed according to the following table:\\
+
+\begin{center}
+\begin{tabular}{ |l|c|c| }
+\hline
+ & Training Set & Test Set \\ \hline
+\multirow{3}{*}{Negative}
+ & & \\
+ & 249 &  250\\
+  & & \\
+
+ \hline
+\multirow{3}{*}{Positive}
+ & & \\
+ & 308 &  308\\
+  & & \\
+ \hline
+\end{tabular}
+\end{center}
+
+\subsubsection{Vectorizer and Classifier Parameters}
+Firstly we consider the process of vectorization that we have to apply in order to transform our text files into a matrix of TfIdf features. For this step we have:\\
+\begin{itemize}[label={}]
+	\item $ \textbf{tokenizer} \in \{None, stemming\_tokenizer, stemming\_tokenizer\_stopwords\_filter\}$\\   override the string tokenization function if its value is different from $None$;
+    	\item  $ \textbf{ngram\_range} \in \{ (1, 1), (1, 2),(1,3)\}$\\ specify the lower and upper boundary of the range of n-values for different n-grams to be extracted;\\
+\end{itemize}
+
+ While, for the classification phase we have:\\
+\begin{itemize}[label={}]
+	\item $ \textbf{alpha} \in \{0.001, 0.01,  1, 10\}$ specify the additive smoothing parameter;\\
+\end{itemize}
+
+\subsubsection{Parallelism}
+
+
+\subsubsection{Best Parameters Values}
+After performing cross-validation, as explained before, we have found that the best parameters configuration is:
+\begin{table}[!h]
+\begin{center}
+\begin{tabular}{| c | c |}
+\hline
+\textbf{Parameter} & \textbf{Value} \\ \hline
+mnb\_\_alpha & 1\\ \hline
+vect\_\_ngram\_range & (1,1)\\ \hline
+vect\_\_tokenizer & stemming\_tokenizer\_stopwords\_filter\\ \hline
+\end{tabular}
+\end{center}
+\end{table}
+
+\subsubsection{Results for Classification}
+Output of \textbf{metrics.classification\_report}:\\
+\begin{lstlisting}[language=Python]
+----------------------------------------------------
+             precision    recall  f1-score   support
+
+   Positive       0.90      0.98      0.94       308
+   negative       0.98      0.86      0.92       250
+
+avg / total       0.93      0.93      0.93       558
+----------------------------------------------------
+\end{lstlisting}
+
+The \textbf{Confusion Matrix}:\\
+\begin{center}
+\begin{tabular}{ |l|c|c| }
+\hline
+ & Predicted-Ham & Predicted-Spam \\ \hline
+\multirow{3}{*}{True-Ham}
+ & & \\
+ & 303 &  5\\
+  & & \\
+
+ \hline
+\multirow{3}{*}{True-Spam}
+ & & \\
+ & 34 &  216\\
+  & & \\
+ \hline
+\end{tabular}
+\end{center}
+The \textbf{Normalized-Accuracy} value: 0.930107526882\\
+The \textbf{Mattiews Correlation Coefficient}: 0.862006201146\\
+
+
+\subsection{SVC}
+
+
+\subsubsection{Dataset}
+Our dataset is composed by  1115 text files representing positive and negative sentences. These files are composed according to the following table:\\
+
+\begin{center}
+\begin{tabular}{ |l|c|c| }
+\hline
+ & Training Set & Test Set \\ \hline
+\multirow{3}{*}{Negative}
+ & & \\
+ & 249 &  250\\
+  & & \\
+
+ \hline
+\multirow{3}{*}{Positive}
+ & & \\
+ & 308 &  308\\
+  & & \\
+ \hline
+\end{tabular}
+\end{center}
+
+\subsubsection{Vectorizer and Classifier Parameters}
+Firstly we consider the process of vectorization that we have to apply in order to transform our text files into a matrix of TfIdf features. For this step we have:\\
+\begin{itemize}[label={}]
+	\item $ \textbf{tokenizer} \in \{None, stemming\_tokenizer, stemming\_tokenizer\_stopwords\_filter\}$ \\  override the string tokenization function if its value is different from $None$;
+    	\item  $ \textbf{ngram\_range} \in \{ (1, 1), (1, 2),(1,3)\}$\\ specify the lower and upper boundary of the range of n-values for different n-grams to be extracted;\\
+\end{itemize}
+
+ While, for the classification phase we have:\\
+\begin{itemize}[label={}]
+	\item $ \textbf{C} \in \{0.01, 0.1, 1.0, 10.0, 100.0\}$ \\ specify the penalty parameter C value of the error term ;\\
+\end{itemize}
+
+\subsubsection{Parallelism}
+
+
+\subsubsection{Best Parameters Values}
+After performing cross-validation, as explained before, we have found that the best parameters configuration is:
+\begin{table}[!h]
+\begin{center}
+\begin{tabular}{| c | c |}
+\hline
+\textbf{Parameter} & \textbf{Value} \\ \hline
+svc\_\_C : 10\\ \hline
+vect\_\_ngram\_range & (1,3)\\ \hline
+vect\_\_tokenizer & stemming\_tokenizer\_stopwords\_filter\\ \hline
+\end{tabular}
+\end{center}
+\end{table}
+
+\subsubsection{Results for Classification}
+Output of \textbf{metrics.classification\_report}:\\
+\begin{lstlisting}[language=Python]
+----------------------------------------------------
+             precision    recall  f1-score   support
+
+   Positive       0.96      0.97      0.97       308
+   negative       0.97      0.95      0.96       250
+
+avg / total       0.96      0.96      0.96       558
+----------------------------------------------------
+\end{lstlisting}
+
+The \textbf{Confusion Matrix}:\\
+\begin{center}
+\begin{tabular}{ |l|c|c| }
+\hline
+ & Predicted-Ham & Predicted-Spam \\ \hline
+\multirow{3}{*}{True-Ham}
+ & & \\
+ & 300 &  8\\
+  & & \\
+
+ \hline
+\multirow{3}{*}{True-Spam}
+ & & \\
+ & 13 &  237\\
+  & & \\
+ \hline
+\end{tabular}
+\end{center}
+The \textbf{Normalized-Accuracy} value: 0.962365591398\\
+The \textbf{Mattiews Correlation Coefficient}: 0.923917742518\\
+
+\end{document}

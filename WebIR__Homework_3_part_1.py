@@ -37,17 +37,15 @@ if __name__ == "__main__":
 
 	training_dataset = load_files(data_folder_training_set)
 	test_dataset = load_files(data_folder_test_set)
-	print
-	print "----------------------"
-	print "Dataset:"
-	print
+
+	print("----------------------")
+	print("Dataset:")
 	print("Total number of training documents: %d" % len(training_dataset.data))
 	print("Total number of testing documents: %d" % len(test_dataset.data))
-	print
 	print("Classes:")
 	print(training_dataset.target_names)
-	print "----------------------"
-	print
+	print("----------------------")
+
 
 	# Load Training-Set
 	X_train, X_test_DUMMY_to_ignore, Y_train, Y_test_DUMMY_to_ignore = train_test_split(training_dataset.data,
@@ -61,19 +59,16 @@ if __name__ == "__main__":
 														train_size=0.0)
 
 	target_names = training_dataset.target_names
-	print
-	print "----------------------"
-	print "Creating Training Set and Test Set"
-	print
-	print "Training Set Size"
+
+	print("----------------------")
+	print("Creating Training Set and Test Set")
+	print("Training Set Size")
 	print(Y_train.shape)
-	print
-	print "Test Set Size"
+	print("Test Set Size")
 	print(Y_test.shape)
-	print
 	print("Classes:")
 	print(target_names)
-	print "----------------------"
+	print("----------------------")
 
 	## Vectorization object
 	vectorizer = TfidfVectorizer(strip_accents= None,preprocessor = None,)
@@ -145,29 +140,29 @@ if __name__ == "__main__":
 										Y_test,
 										Y_predicted,
 										target_names=target_names)
-	print
-	print "----------------------------------------------------"
+
+	print("----------------------------------------------------")
 	print(output_classification_report)
-	print "----------------------------------------------------"
-	print
+	print("----------------------------------------------------")
+
 
 	# Compute the confusion matrix
 	confusion_matrix = metrics.confusion_matrix(Y_test, Y_predicted)
-	print
+
 	print("Confusion Matrix: True-Classes X Predicted-Classes")
 	print(confusion_matrix)
-	print
+
 
 	# Compute the Normalized Accuracy
 	normalized_accuracy = metrics.accuracy_score(Y_test, Y_predicted)
-	print
+
 	print("Normalized Accuracy")
 	print(normalized_accuracy)
-	print
+
 
 	# Compute the matthews_corrcoef
 	matthews_corrcoefs = metrics.matthews_corrcoef(Y_test, Y_predicted)
-	print
+
 	print("Matthews Correlation Coefficients")
 	print(matthews_corrcoefs)
-	print
+
