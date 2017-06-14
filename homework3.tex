@@ -254,6 +254,15 @@ Output of \textbf{metrics.classification\_report}:\\
 avg / total       0.90      0.89      0.89       105
 ----------------------------------------------------
 \end{lstlisting}
+where:
+\begin{itemize}[label={}]
+	\item $ \textbf{precision}  = \frac{TP}{TP+FP}$\\
+	\item $ \textbf{recall}  = \frac{TP}{TP+FN}$\\
+	\item $ \textbf{f1 score}  = \frac{2(precision \times recall}{(precision + recall)}$ \\
+	\item $ \textbf{support} $ is the number of samples belonging to that class\\
+\end{itemize}
+
+
 The \textbf{Confusion Matrix}:\\
 \begin{center}
 \begin{tabular}{ |l|c|c| }

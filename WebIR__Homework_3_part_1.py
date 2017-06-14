@@ -50,13 +50,15 @@ if __name__ == "__main__":
 	# Load Training-Set
 	X_train, X_test_DUMMY_to_ignore, Y_train, Y_test_DUMMY_to_ignore = train_test_split(training_dataset.data,
 														training_dataset.target,
-														test_size=0.0)
+														test_size=0.0,
+                                                        random_state=42)
 	target_names = training_dataset.target_names
 
 	# Load Test-Set
 	X_train_DUMMY_to_ignore, X_test, Y_train_DUMMY_to_ignore, Y_test = train_test_split(test_dataset.data,
 														test_dataset.target,
-														train_size=0.0)
+														train_size=0.0,
+                                                        random_state=42)
 
 	target_names = training_dataset.target_names
 

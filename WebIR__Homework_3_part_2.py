@@ -1,5 +1,5 @@
 import string
-
+import numpy as np
 from sklearn.datasets import load_files
 from sklearn.model_selection import train_test_split
 
@@ -19,6 +19,8 @@ from sklearn.model_selection import GridSearchCV
 from sklearn import metrics
 
 import pprint as pp
+
+
 
 ############################################
 stemmer = EnglishStemmer()
@@ -50,13 +52,15 @@ if __name__ == "__main__":
 	# Load Training-Set
 	X_train, X_test_DUMMY_to_ignore, Y_train, Y_test_DUMMY_to_ignore = train_test_split(training_dataset.data,
 														training_dataset.target,
-														test_size=0.0)
+														test_size=0.0,
+                                                        random_state=42)
 	target_names = training_dataset.target_names
 
 	# Load Test-Set
 	X_train_DUMMY_to_ignore, X_test, Y_train_DUMMY_to_ignore, Y_test = train_test_split(test_dataset.data,
 														test_dataset.target,
-														train_size=0.0)
+														train_size=0.0,
+                                                        random_state=42)
 
 	target_names = training_dataset.target_names
 	print("----------------------")
@@ -70,16 +74,16 @@ if __name__ == "__main__":
 	print("----------------------")
 
 	## Vectorization object
-	vectorizer = TfidfVectorizer(strip_accents= None,preprocessor = None,)
+	vectorizer = TfidfVectorizer(strip_accents= None,preprocessor = None)
 
 	## set of classifiers
 	names = ["Linear SVM", "Nearest Neighbors", "Naive Bayes"]
-	classifiers = [SVC(kernel="linear"), KNeighborsClassifier(), MultinomialNB()]
+	classifiers = [SVC(kernel="linear", random_state=42), KNeighborsClassifier(), MultinomialNB()]
 
 	
-	pipelines = [Pipeline([('vect', vectorizer),('clf', classifiers[0]),]),
-				 Pipeline([('vect', vectorizer),('clf', classifiers[1]),]),
-				 Pipeline([('vect', vectorizer),('clf', classifiers[2]),]),]
+	pipelines = [Pipeline([('vect', vectorizer),('svm', classifiers[0]),]),
+				 Pipeline([('vect', vectorizer),('knn', classifiers[1]),]),
+				 Pipeline([('vect', vectorizer),('mnb', classifiers[2]),]),]
 
 	## Setting parameters.
 	## List of Dictionaries in which in each dictionary:
@@ -88,19 +92,19 @@ if __name__ == "__main__":
 	parameters = [
 		{
 		'vect__tokenizer': [None, stemming_tokenizer, stemming_tokenizer_stopwords_filter],
-		'vect__ngram_range': [(1, 1), (1, 2),(1,3)],
-		'clf__C': [0.01, 0.1, 1.0, 10.0, 100.0],
+		'vect__ngram_range': [(1, 1), (2, 2),(3, 3)],
+		'svm__C': [0.01, 0.1, 1.0, 10.0],
 		},
 		{
 		'vect__tokenizer': [None, stemming_tokenizer, stemming_tokenizer_stopwords_filter],
-		'vect__ngram_range': [(1, 1), (1, 2),(1,3)],
-		'clf__n_neighbors': [1,3,5,7,9],
-		'clf__weights': ["uniform", "distance"]
+		'vect__ngram_range': [(1, 1), (2, 2),(3,3)],
+		'knn__n_neighbors': [1,3,5,7,9],
+		'knn__weights': ["uniform", "distance"]
 		},
 		{
 		'vect__tokenizer': [None, stemming_tokenizer, stemming_tokenizer_stopwords_filter],
-		'vect__ngram_range': [(1, 1), (1, 2),(1,3)],
-		'clf__alpha': [.001,.01, 1.0, 10.]
+		'vect__ngram_range': [(1, 1), (2, 2),(3,3)],
+		'mnb__alpha': [.001,.01, 1.0, 10.]
 		}
 	]
 	
