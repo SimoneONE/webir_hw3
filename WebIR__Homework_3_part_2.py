@@ -116,7 +116,7 @@ if __name__ == "__main__":
 								   parameters[i],
 								   scoring = metrics.make_scorer(metrics.matthews_corrcoef),
 								   cv = 10,
-								   n_jobs = 4)
+								   n_jobs = 8)
 
 		## Start an exhaustive search to find the best combination of parameters
 		## according to the selected scoring-function.

@@ -176,11 +176,11 @@ Firstly we consider the process of vectorization that we have to apply in order 
 	\item $ \textbf{tokenizer} \in \{None, stemming\_tokenizer, stemming\_tokenizer\_stopwords\_filter\}$\\   override the string tokenization function if its value is different from $None$;
     	\item  $ \textbf{ngram\_range} \in \{ (1, 1), (1, 2),(1,3)\}$\\ specify the lower and upper boundary of the range of n-values for different n-grams to be extracted;\\
 \end{itemize}
-
+\noindent
  While, for the classification phase we have:\\
 \begin{itemize}[label={}]
 	\item $ \textbf{n\_neighbors} \in \{1,3,5,7,9\}$\\ specify the number of neighbors to use for classifying points;
-    	\item  $ \textbf{weigths} \in \{ "uniform", "distance"\}$ \\specify the weight function in prediction ;
+    	\item  $ \textbf{weigths} \in \{ "uniform", "distance"\}$ \\specify the weight function in prediction;
 \end{itemize}
 
 
@@ -198,7 +198,7 @@ preprocessor = None,)
 knn = KNeighborsClassifier()
 pipeline = Pipeline([('vect', vectorizer), ('knn', knn),])
 \end{lstlisting}
-
+\noindent
 Then, we can directly make use of \textbf{GridSearchCV} function, in order to setup the automated search for the best parameter configuration.\\
 \textbf{GridSearchCV} has as input parameters:\\
 \begin{itemize}[label={}]
@@ -223,7 +223,7 @@ pipeline,
 parameters,
 scoring = metrics.make_scorer(metrics.matthews_corrcoef),
 cv = 10,
-n_jobs = 4)
+n_jobs = 8)
 \end{lstlisting}
 
 \subsubsection{Best Parameters Values}
@@ -261,8 +261,7 @@ where:
 	\item $ \textbf{f1 score}  = \frac{2(precision \times recall}{(precision + recall)}$ \\
 	\item $ \textbf{support} $ is the number of samples belonging to that class\\
 \end{itemize}
-
-
+\noindent
 The \textbf{Confusion Matrix}:\\
 \begin{center}
 \begin{tabular}{ |l|c|c| }
@@ -282,7 +281,7 @@ The \textbf{Confusion Matrix}:\\
 \end{tabular}
 \end{center}
 The \textbf{Normalized-Accuracy} value: 0.885714285714\\
-The \textbf{Mattiews Correlation Coefficient}: 0.780832919631\\
+The \textbf{Matthews Correlation Coefficient}: 0.780832919631\\
 
 \section{Sentiment Analysis}
 
@@ -317,8 +316,8 @@ Firstly we consider the process of vectorization that we have to apply in order 
 	\item $ \textbf{tokenizer} \in \{None, stemming\_tokenizer, stemming\_tokenizer\_stopwords\_filter\}$ \\  override the string tokenization function if its value is different from $None$;
     	\item  $ \textbf{ngram\_range} \in \{ (1, 1), (1, 2),(1,3)\}$\\ specify the lower and upper boundary of the range of n-values for different n-grams to be extracted;\\
 \end{itemize}
-
- While, for the classification phase we have:\\
+\noindent
+While, for the classification phase we have:\\
 \begin{itemize}[label={}]
 	\item $ \textbf{n\_neighbors} \in \{1,3,5,7,9\}$ \\ specify the number of neighbors to use for classifying points;
     	\item  $ \textbf{weigths} \in \{ uniform, distance\}$\\ specify the weight function in prediction ;\\
@@ -355,7 +354,7 @@ Output of \textbf{metrics.classification\_report}:\\
 avg / total       0.88      0.88      0.88       558
 ----------------------------------------------------
 \end{lstlisting}
-
+\noindent
 The \textbf{Confusion Matrix}:\\
 \begin{center}
 \begin{tabular}{ |l|c|c| }
@@ -375,7 +374,7 @@ The \textbf{Confusion Matrix}:\\
 \end{tabular}
 \end{center}
 The \textbf{Normalized-Accuracy} value: 0.876344086022\\
-The \textbf{Mattiews Correlation Coefficient}: 0.752375671874\\
+The \textbf{Matthews Correlation Coefficient}: 0.752375671874\\
 
 
 \subsection{MultinomialNB Classifier}
@@ -408,7 +407,7 @@ Firstly we consider the process of vectorization that we have to apply in order 
 	\item $ \textbf{tokenizer} \in \{None, stemming\_tokenizer, stemming\_tokenizer\_stopwords\_filter\}$\\   override the string tokenization function if its value is different from $None$;
     	\item  $ \textbf{ngram\_range} \in \{ (1, 1), (1, 2),(1,3)\}$\\ specify the lower and upper boundary of the range of n-values for different n-grams to be extracted;\\
 \end{itemize}
-
+\noindent
  While, for the classification phase we have:\\
 \begin{itemize}[label={}]
 	\item $ \textbf{alpha} \in \{0.001, 0.01,  1, 10\}$ specify the additive smoothing parameter;\\
@@ -443,7 +442,7 @@ Output of \textbf{metrics.classification\_report}:\\
 avg / total       0.93      0.93      0.93       558
 ----------------------------------------------------
 \end{lstlisting}
-
+\noindent
 The \textbf{Confusion Matrix}:\\
 \begin{center}
 \begin{tabular}{ |l|c|c| }
@@ -463,10 +462,10 @@ The \textbf{Confusion Matrix}:\\
 \end{tabular}
 \end{center}
 The \textbf{Normalized-Accuracy} value: 0.930107526882\\
-The \textbf{Mattiews Correlation Coefficient}: 0.862006201146\\
+The \textbf{Matthews Correlation Coefficient}: 0.862006201146\\
 
 
-\subsection{SVC}
+\subsection{Linear SVC}
 
 
 \subsubsection{Dataset}
@@ -496,7 +495,7 @@ Firstly we consider the process of vectorization that we have to apply in order 
 	\item $ \textbf{tokenizer} \in \{None, stemming\_tokenizer, stemming\_tokenizer\_stopwords\_filter\}$ \\  override the string tokenization function if its value is different from $None$;
     	\item  $ \textbf{ngram\_range} \in \{ (1, 1), (1, 2),(1,3)\}$\\ specify the lower and upper boundary of the range of n-values for different n-grams to be extracted;\\
 \end{itemize}
-
+\noindent
  While, for the classification phase we have:\\
 \begin{itemize}[label={}]
 	\item $ \textbf{C} \in \{0.01, 0.1, 1.0, 10.0, 100.0\}$ \\ specify the penalty parameter C value of the error term ;\\
@@ -531,7 +530,7 @@ Output of \textbf{metrics.classification\_report}:\\
 avg / total       0.96      0.96      0.96       558
 ----------------------------------------------------
 \end{lstlisting}
-
+\noindent
 The \textbf{Confusion Matrix}:\\
 \begin{center}
 \begin{tabular}{ |l|c|c| }
@@ -551,6 +550,6 @@ The \textbf{Confusion Matrix}:\\
 \end{tabular}
 \end{center}
 The \textbf{Normalized-Accuracy} value: 0.962365591398\\
-The \textbf{Mattiews Correlation Coefficient}: 0.923917742518\\
+The \textbf{Matthews Correlation Coefficient}: 0.923917742518\\
 
 \end{document}
